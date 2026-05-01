@@ -147,9 +147,9 @@ export default function App() {
   return (
     <AuthContext.Provider value={{ user, profile, loading, isAdmin: profile?.role === 'admin', updateProfile }}>
       <ThemeContext.Provider value={{ theme, toggleTheme }}>
-        <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-sans selection:bg-emerald-100 selection:text-emerald-900 relative transition-colors duration-300">
+        <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-sans selection:bg-emerald-100 selection:text-emerald-900 relative transition-colors duration-300 w-full overflow-x-hidden">
           {/* Global Background Image with Blur */}
-          <div className="fixed inset-0 -z-10 overflow-hidden">
+          <div className="fixed inset-0 -z-10 w-full h-full">
             <AnimatePresence mode="wait">
               <motion.img 
                 key={currentPage}

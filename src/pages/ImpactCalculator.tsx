@@ -213,7 +213,7 @@ export default function ImpactCalculator({ navigate }: { navigate: (p: string) =
                   </AreaChart>
                 </ResponsiveContainer>
               </div>
-              <div className="mt-4 flex justify-between text-[10px] font-bold uppercase tracking-widest text-slate-400">
+              <div className="mt-4 flex flex-wrap gap-2 justify-between text-[10px] sm:text-xs font-bold uppercase tracking-widest text-slate-400">
                 <span>Standard Road</span>
                 <span className="text-emerald-500">EcoRoad (Textile)</span>
               </div>

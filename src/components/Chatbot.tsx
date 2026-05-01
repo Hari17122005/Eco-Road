@@ -50,7 +50,7 @@ export default function Chatbot() {
             initial={{ opacity: 0, y: 20, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
-            className={`${isFullScreen ? 'fixed inset-0 w-full h-full rounded-none border-none' : 'w-[calc(100vw-2rem)] sm:w-[380px] h-[60vh] sm:h-[520px] rounded-[2rem] sm:rounded-[2.5rem] border border-white/20 mb-2 sm:mb-4'} glass shadow-2xl flex flex-col overflow-hidden transition-all duration-500`}
+            className={`${isFullScreen ? 'fixed inset-0 w-full h-full rounded-none border-none' : 'w-[calc(100vw-2rem)] sm:w-[380px] h-[60vh] max-h-[80vh] sm:max-h-[520px] rounded-[2rem] sm:rounded-[2.5rem] border border-white/20 mb-2 sm:mb-4'} glass shadow-2xl flex flex-col overflow-hidden transition-all duration-500`}
           >
             <div className={`p-3 sm:p-6 bg-slate-900 text-white flex justify-between items-center ${isFullScreen ? 'px-6 py-4 sm:px-12 sm:py-8' : ''}`}>
               <div className="flex items-center gap-2 sm:gap-3">

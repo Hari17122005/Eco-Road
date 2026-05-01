@@ -22,7 +22,7 @@
 
 @layer base {
   body {
-    @apply bg-[#FAFAFA] text-slate-900 antialiased transition-colors duration-300;
+    @apply bg-[#FAFAFA] text-slate-900 antialiased transition-colors duration-300 overflow-x-hidden;
   }
   
   .dark body {
@@ -31,6 +31,16 @@
   
   h1, h2, h3, h4 {
     @apply font-display tracking-tight transition-colors duration-300;
+    overflow-wrap: break-word;
+  }
+
+  p, span, div {
+    min-width: 0;
+  }
+  
+  img, svg, video, canvas, audio, iframe, embed, object {
+    display: block;
+    max-width: 100%;
   }
 }
 
