@@ -1,0 +1,80 @@
+{
+  "entities": {
+    "User": {
+      "title": "User Profile",
+      "description": "Stores user profile information and roles.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "Firebase Auth UID" },
+        "email": { "type": "string", "format": "email" },
+        "displayName": { "type": "string" },
+        "role": { "type": "string", "enum": ["admin", "user"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "email", "role"]
+    },
+    "WasteAnalysis": {
+      "title": "Textile Waste Analysis",
+      "description": "Results of textile waste resource analysis.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "textileType": { "type": "string" },
+        "amount": { "type": "number" },
+        "processingForm": { "type": "string" },
+        "roadType": { "type": "string" },
+        "recommendedPercentage": { "type": "number" },
+        "suitabilityRating": { "type": "string" },
+        "durabilityImprovement": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "textileType", "amount"]
+    },
+    "RoadEvaluation": {
+      "title": "Road Quality Evaluation",
+      "description": "Results of AI-powered road image analysis.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "imageUrl": { "type": "string" },
+        "condition": { "type": "string", "enum": ["Good", "Moderate", "Poor"] },
+        "damagePercentage": { "type": "number" },
+        "detectedIssues": { "type": "array", "items": { "type": "string" } },
+        "suggestions": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "imageUrl", "condition"]
+    },
+    "EducationalContent": {
+      "title": "Educational Content",
+      "description": "Research results and learning hub articles.",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "category": { "type": "string", "enum": ["research", "learning"] },
+        "content": { "type": "string" },
+        "authorId": { "type": "string" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["title", "category", "content"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profiles"
+    },
+    "/waste_analyses/{analysisId}": {
+      "schema": "WasteAnalysis",
+      "description": "Textile waste analysis records"
+    },
+    "/road_evaluations/{evaluationId}": {
+      "schema": "RoadEvaluation",
+      "description": "Road quality evaluation records"
+    },
+    "/educational_content/{contentId}": {
+      "schema": "EducationalContent",
+      "description": "Educational and research articles"
+    }
+  }
+}

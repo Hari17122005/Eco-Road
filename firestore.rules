@@ -1,0 +1,91 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // ===============================================================
+    // Assumed Data Model
+    // ===============================================================
+    // Collection: users
+    // Fields: uid, email, displayName, role, createdAt
+    //
+    // Collection: waste_analyses
+    // Fields: userId, textileType, amount, processingForm, roadType, recommendedPercentage, suitabilityRating, durabilityImprovement, createdAt
+    //
+    // Collection: road_evaluations
+    // Fields: userId, imageUrl, condition, damagePercentage, detectedIssues, suggestions, createdAt
+    //
+    // Collection: educational_content
+    // Fields: title, category, content, authorId, updatedAt
+    // ===============================================================
+
+    // Helper Functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    function isAdmin() {
+      return isAuthenticated() && (
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin' ||
+        (request.auth.token.email == "dreambreakerz777@gmail.com" && request.auth.token.email_verified == true)
+      );
+    }
+
+    function isValidUser(data) {
+      return data.keys().hasAll(['uid', 'email', 'role']) &&
+             data.uid is string &&
+             data.email is string &&
+             data.role in ['admin', 'user'];
+    }
+
+    function isValidWasteAnalysis(data) {
+      return data.keys().hasAll(['userId', 'textileType', 'amount']) &&
+             data.userId == request.auth.uid &&
+             data.amount is number &&
+             data.amount > 0;
+    }
+
+    function isValidRoadEvaluation(data) {
+      return data.keys().hasAll(['userId', 'imageUrl', 'condition']) &&
+             data.userId == request.auth.uid &&
+             data.imageUrl is string &&
+             data.condition in ['Good', 'Moderate', 'Poor'];
+    }
+
+    function isValidEducationalContent(data) {
+      return data.keys().hasAll(['title', 'category', 'content']) &&
+             data.title is string && data.title.size() < 200 &&
+             data.category in ['research', 'learning'] &&
+             data.content is string;
+    }
+
+    // Rules
+    match /users/{userId} {
+      allow read: if isAuthenticated();
+      allow create: if isOwner(userId) && isValidUser(request.resource.data) && (request.resource.data.role == 'user' || isAdmin());
+      allow update: if (isOwner(userId) && request.resource.data.role == resource.data.role) || isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    match /waste_analyses/{analysisId} {
+      allow read: if isAuthenticated() && (isOwner(resource.data.userId) || isAdmin());
+      allow create: if isAuthenticated() && isValidWasteAnalysis(request.resource.data);
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    match /road_evaluations/{evaluationId} {
+      allow read: if isAuthenticated() && (isOwner(resource.data.userId) || isAdmin());
+      allow create: if isAuthenticated() && isValidRoadEvaluation(request.resource.data);
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    match /educational_content/{contentId} {
+      allow read: if true;
+      allow write: if isAdmin() && isValidEducationalContent(request.resource.data);
+    }
+  }
+}
